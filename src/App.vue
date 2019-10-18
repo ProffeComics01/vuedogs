@@ -8,9 +8,12 @@
   </div>
 </template>
 
+<script lang='ts'>
+</script>
+
 <style lang="scss">
 #app {
-  background-color: #3256a9;
+  background-color: #13b2b8;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
