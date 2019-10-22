@@ -38,7 +38,9 @@ import { Component, Vue } from 'vue-property-decorator';
 import { mapGetters, mapActions } from 'vuex';
 import Item from '@/classes/Item.ts';
 import axios from 'axios';
+import AxiosResponse from 'axios';
 import dogNames from 'dog-names'; // = require('dog-names');
+import Axios from 'axios';
 
 let dogNamesList: string[];
 
@@ -70,6 +72,15 @@ export default class ComponentList extends Vue {
       });
 
   }
+
+  public getRandomImg = (breed: string) => {
+    try {
+      return axios.get('https://dog.ceo/api/breed/' + breed + '/images/random');
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
   public mouseOver(id: number) {
     this.selectedId = id;
     this.classname = 'animated tada';
@@ -80,22 +91,19 @@ export default class ComponentList extends Vue {
     this.classname = 'animated bounceIn';
     // console.log('leave');
   }
-  public getRandomImg = (breed: string) => {
-    try {
-      return axios.get('https://dog.ceo/api/breed/' + breed + '/images/random');
-    } catch (error) {
-      console.error(error);
-    }
-  }
+
 
   public countBreeds = async () => {
+
     const getBreeds = () => {
       try {
         return axios.get('https://dog.ceo/api/breeds/list/all');
       } catch (error) {
         console.error(error);
+        return null;
       }
     };
+
     const breeds = getBreeds()
       .then((response) => {
         if (response.data.message) {
@@ -110,21 +118,24 @@ export default class ComponentList extends Vue {
             ++id; // start from 1
             let randomDogName: string;
             // logic to build the dog breed name from sub-breeds
-            subBreedsCount = Object.entries(response.data.message)[i][1].length;
-            // console.log('subBreeds count:' + subBreedsCount);
-            if ( subBreedsCount === 0 ) {
-                randomDogName = dogNames.allRandom(); // get a random dog name
-                elemento = Object.entries(response.data.message)[i][0];
-                this.addItem(id, randomDogName, elemento, 'dog', false);
-                //console.log( 'added: ' + randomDogName + ' un ' + elemento);
-            } else {
-                for (let index = 0; index < subBreedsCount; index++) {
-                  ++id;  // start from 1
-                  randomDogName = dogNames.allRandom(); // get a random dog name
-                  elemento = Object.entries(response.data.message)[i][0] + '/' +
-                  Object.entries(response.data.message)[i][1][index];
-                  this.addItem(id, randomDogName, elemento, 'dog', false);
-                  //console.log( 'added: ' + randomDogName + ' un ' + elemento);
+            const entry: object = Object.entries(response.data.message)[i];
+            if ( Array.isArray(entry) ) {
+                subBreedsCount = entry[1].length;
+                // console.log('subBreeds count:' + subBreedsCount);
+                if ( subBreedsCount === 0 ) {
+                    randomDogName = dogNames.allRandom(); // get a random dog name
+                    elemento = entry[0];
+                    this.addItem(id, randomDogName, elemento, 'dog', false);
+                    // console.log( 'added: ' + randomDogName + ' un ' + elemento);
+                } else {
+                    for (let index = 0; index < subBreedsCount; index++) {
+                      ++id;  // start from 1
+                      randomDogName = dogNames.allRandom(); // get a random dog name
+                      elemento = entry[0] + '/' +
+                      entry[1][index];
+                      this.addItem(id, randomDogName, elemento, 'dog', false);
+                      // console.log( 'added: ' + randomDogName + ' un ' + elemento);
+                    }
                 }
             }
 

@@ -5,23 +5,6 @@ import router from './router';
 import axios, { AxiosStatic } from 'axios';
 import './assets/css/animate.css@3.5.1.css';
 
-axios.defaults.baseURL = 'https://dog.ceo/api/breeds/';
-Vue.prototype.$axios = axios;
-declare module 'vue/types/vue' {
-  interface Vue {
-    $axios: AxiosStatic;
-  }
-}
-/*
-
-Vue.use({
-    install(Vue) {
-    Vue.prototype.$api = axios.create({
-      baseURL: 'https://dog.ceo/api/breeds/',
-    });
-  },
-}); */
-
 Vue.config.productionTip = false;
 
 new Vue({
