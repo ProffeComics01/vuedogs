@@ -1,4 +1,5 @@
 # librerie_prova
+### A quick test of Vue+TypeScript (decorated component class style) and Axios
 
 ## Project setup
 ```
