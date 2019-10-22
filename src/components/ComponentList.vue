@@ -1,6 +1,6 @@
 <template>
   <div id="componentlist">
-    <h3>Lista dei componenti</h3>
+    <h3>Lista combinata da una chiamata a dogs API (per razze immagini) e dognames npm package</h3>
     <table class="table table-hover">
         <thead>
         <tr>
@@ -22,7 +22,7 @@
             name="custom-classes-transition"
             enter-active-class="animated tada"
             leave-active-class="animated bounceOutRight">
-                <img :id="'img'+item.id" :class="selectedId===item.id?classname:defaultclass" :alt="item.name" :src="item.picture" height="110" v-on:mouseover="mouseOver(item.id);" v-on:mouseleave="mouseLeave(item.id);">
+                <img :id="'img'+item.id" :class="selectedId===item.id||unselectedId===item.id?classname:defaultclass" :alt="item.name" :src="item.picture" height="110" v-on:mouseover="mouseOver(item.id);" v-on:mouseleave="mouseLeave(item.id);">
             </transition>
           </td>
           <td>{{item.type}}</td>
@@ -83,11 +83,13 @@ export default class ComponentList extends Vue {
   }
   public mouseOver(id: number) {
     this.selectedId = id;
+    this.unselectedId = -1;
     this.classname = 'animated tada';
     // console.log('enter');
   }
   public mouseLeave(id: number) {
     this.unselectedId = id;
+    this.selectedId = -1;
     this.classname = 'animated bounceIn';
     // console.log('leave');
   }
