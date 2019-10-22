@@ -4,13 +4,13 @@
 
 <script lang='ts'>
 import { Component, Vue } from 'vue-property-decorator';
-import Flipbook from 'flipbook-vue';
+/* import Flipbook from 'flipbook-vue'; */
 const pages = [ null, 'images/1.jpg', 'images/2.jpg', 'images/3.jpg',  'images/4.jpg'];
 const pagesHiRes = [ null, 'images/1.jpg', 'images/2.jpg', 'images/3.jpg',  'images/4.jpg'];
 const hasMouse = true;
 
 @Component({
-  components: { Flipbook },
+  components: { /* Flipbook */ },
   /* props: {pages, pagesHiRes, hasMouse }, */
 })
 

@@ -8,5 +8,4 @@ export default class Item {
         this.type = type;
         this.done = done;
     }
-
 }

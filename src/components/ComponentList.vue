@@ -57,9 +57,18 @@ export default class ComponentList extends Vue {
   public unselectedId = 0;
   public addItem(id: number, name: string, description: string, type: string, done: boolean = false) {
     let picture: string = 'default.png';
+    const getRandomImg = (breed: string) => {
+      try {
+        return axios.get('https://dog.ceo/api/breed/' + breed + '/images/random');
+      } catch (error) {
+        console.error(error);
+        return null;
+      }
+    };
     const thisItem = this.items.push({id, name, description, picture, type, done });
-
-    const imgUrl = this.getRandomImg(description)
+    const res = getRandomImg(description);
+    if (res !== null) {
+      const imgUrl = res
       .then((response) => {
         if (response.data.message) {
           picture = response.data.message;
@@ -70,17 +79,12 @@ export default class ComponentList extends Vue {
       .catch( (error) => {
         console.log(error);
       });
-
-  }
-
-  public getRandomImg = (breed: string) => {
-    try {
-      return axios.get('https://dog.ceo/api/breed/' + breed + '/images/random');
-    } catch (error) {
-      console.error(error);
-      return null;
     }
+
+
   }
+
+
   public mouseOver(id: number) {
     this.selectedId = id;
     this.unselectedId = -1;
@@ -105,8 +109,9 @@ export default class ComponentList extends Vue {
         return null;
       }
     };
-
-    const breeds = getBreeds()
+    const res = getBreeds();
+    if (res !== null) {
+      const breeds = res
       .then((response) => {
         if (response.data.message) {
           let elemento = '';
@@ -147,6 +152,8 @@ export default class ComponentList extends Vue {
       .catch( (error) => {
         console.log(error);
       });
+    }
+
   }
 
   // Lifecycle hooks
