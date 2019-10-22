@@ -18,12 +18,7 @@
           <td>{{item.name}}</td>
           <td>{{item.description.substr(0,30)}}</td>
           <td>
-            <transition
-            name="custom-classes-transition"
-            enter-active-class="animated tada"
-            leave-active-class="animated bounceOutRight">
-                <img :id="'img'+item.id" :class="selectedId===item.id||unselectedId===item.id?classname:defaultclass" :alt="item.name" :src="item.picture" height="110" v-on:mouseover="mouseOver(item.id);" v-on:mouseleave="mouseLeave(item.id);">
-            </transition>
+              <img :id="'img'+item.id" :class="selectedId===item.id?unselectedId===item.id?leaveclassname:classname:defaultclass" :alt="item.name" :src="item.picture" height="110" v-on:mouseover="mouseOver(item.id);" v-on:mouseleave="mouseLeave(item.id);">
           </td>
           <td>{{item.type}}</td>
           <td><input type="checkbox" :value=item.done></td>
@@ -54,6 +49,8 @@ export default class ComponentList extends Vue {
   public classname = 'imgclass';
   public selectedId = 0;
   public unselectedId = 0;
+  public leaveclassname = 'animated jello';
+  public classname = 'animated pulse';
 
   public addItem(id: number, name: string, description: string, type: string, done: boolean = false) {
     let picture: string = 'default.png';
@@ -119,13 +116,10 @@ export default class ComponentList extends Vue {
   public mouseOver(id: number) {
     this.selectedId = id;
     this.unselectedId = -1;
-    this.classname = 'animated tada';
     // console.log('enter');
   }
   public mouseLeave(id: number) {
     this.unselectedId = id;
-    this.selectedId = -1;
-    this.classname = 'animated bounceIn';
     // console.log('leave');
   }
 
@@ -158,5 +152,7 @@ export default class ComponentList extends Vue {
 /* transitions */
 .imgclass{
   border: 1px solid #dd5522;
+  padding: 0;
+  margin: 0;
 }
 </style>
