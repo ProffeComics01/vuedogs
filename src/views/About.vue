@@ -7,7 +7,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import Flipbook from 'flipbook-vue';
 const pages = [ null, 'images/1.jpg', 'images/2.jpg', 'images/3.jpg',  'images/4.jpg'];
 const pagesHiRes = [ null, 'images/1.jpg', 'images/2.jpg', 'images/3.jpg',  'images/4.jpg'];
-let hasMouse = true;
+const hasMouse = true;
 
 @Component({
   components: { Flipbook },
@@ -17,9 +17,6 @@ let hasMouse = true;
 export default class About extends Vue {
   public membersList: string[] = [];
 
-  public mounted() {
-
-  }
 }
 
 </script>

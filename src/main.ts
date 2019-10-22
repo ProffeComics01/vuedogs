@@ -3,6 +3,7 @@ import App from './App.vue';
 import router from './router';
 // import axios from 'axios';
 import axios, { AxiosStatic } from 'axios';
+import './assets/css/animate.css@3.5.1.css';
 
 axios.defaults.baseURL = 'https://dog.ceo/api/breeds/';
 Vue.prototype.$axios = axios;
@@ -11,7 +12,7 @@ declare module 'vue/types/vue' {
     $axios: AxiosStatic;
   }
 }
-/* 
+/*
 
 Vue.use({
     install(Vue) {
