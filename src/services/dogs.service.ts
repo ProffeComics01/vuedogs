@@ -2,24 +2,28 @@ import axios from 'axios';
 
 import Item from './../classes/Item';
 
-const api = 'api';
+const api = 'https://dog.ceo/api';
 
 class DogsService {
   constructor() {
     console.log('creating new instance of dogs.service');
   }
 
-  public deleteHero(item: Item) {
-    return axios.delete(`${api}/item/${item.id}`);
-  }
   public getBreeds() {
-    return axios.get<Item[]>(`${api}/breeds/list`);
+    return axios.get(`${api}/breeds/list/all`);
   }
+  public getRandomImg(breed: string) {
+    return axios.get(`${api}/breed/` + breed + `/images/random`);
+  }
+  // unused methods
   public addItem(item: Item) {
     return axios.post(`${api}/item/`, { item });
   }
-  public updateHero(item: Item) {
+  public updateDog(item: Item) {
     return axios.put(`${api}/item/${item.id}`, { item });
+  }
+  public deleteDog(item: Item) {
+    return axios.delete(`${api}/breeds/${item.id}`);
   }
 }
 

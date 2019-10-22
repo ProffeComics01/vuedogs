@@ -36,13 +36,11 @@
 <script lang='ts'>
 import { Component, Vue } from 'vue-property-decorator';
 import { mapGetters, mapActions } from 'vuex';
+import { dogsService } from './../services/dogs.service';
 import Item from '@/classes/Item.ts';
 import axios from 'axios';
 import AxiosResponse from 'axios';
-import dogNames from 'dog-names'; // = require('dog-names');
-import Axios from 'axios';
-
-let dogNamesList: string[];
+import dogNames from 'dog-names';
 
 @Component({
   components: { },
@@ -50,6 +48,7 @@ let dogNamesList: string[];
 })
 export default class ComponentList extends Vue {
   public items: Item[] = [];
+  public dogNamesList: string[] = [];
   public showpic: boolean = true;
   public defaultclass = 'imgclass';
   public classname = 'imgclass';
@@ -57,30 +56,17 @@ export default class ComponentList extends Vue {
   public unselectedId = 0;
   public addItem(id: number, name: string, description: string, type: string, done: boolean = false) {
     let picture: string = 'default.png';
-    const getRandomImg = (breed: string) => {
-      try {
-        return axios.get('https://dog.ceo/api/breed/' + breed + '/images/random');
-      } catch (error) {
-        console.error(error);
-        return null;
-      }
-    };
     const thisItem = this.items.push({id, name, description, picture, type, done });
-    const res = getRandomImg(description);
-    if (res !== null) {
-      const imgUrl = res
-      .then((response) => {
-        if (response.data.message) {
-          picture = response.data.message;
-          this.items[ thisItem - 1 ].picture = picture;
-          this.showpic = true;
-        }
-      })
-      .catch( (error) => {
-        console.log(error);
-      });
-    }
-
+    dogsService.getRandomImg(description)
+    .then((response) => {
+      if (response.data.message) {
+        picture = response.data.message;
+        this.items[ thisItem - 1 ].picture = picture;
+      }
+    })
+    .catch( (error) => {
+      console.log(error);
+    });
 
   }
 
@@ -158,7 +144,7 @@ export default class ComponentList extends Vue {
 
   // Lifecycle hooks
   public created() {
-    dogNamesList = dogNames.all;
+    // this.dogNamesList = dogNames.all;
     // console.log(dogNamesList);
     this.countBreeds();
   }
