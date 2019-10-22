@@ -1,16 +1,25 @@
 import Vue from 'vue';
-import './plugins/axios'
 import App from './App.vue';
 import router from './router';
-import axios from 'axios';
+// import axios from 'axios';
+import axios, { AxiosStatic } from 'axios';
+
+axios.defaults.baseURL = 'https://dog.ceo/api/breeds/';
+Vue.prototype.$axios = axios;
+declare module 'vue/types/vue' {
+  interface Vue {
+    $axios: AxiosStatic;
+  }
+}
+/* 
 
 Vue.use({
     install(Vue) {
     Vue.prototype.$api = axios.create({
-      baseURL: 'http://localhost:8000/api/v1/',
+      baseURL: 'https://dog.ceo/api/breeds/',
     });
   },
-});
+}); */
 
 Vue.config.productionTip = false;
 

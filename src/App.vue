@@ -13,7 +13,7 @@
 
 <style lang="scss">
 #app {
-  background-color: #13b2b8;
+  background-color: #7dcbce;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
