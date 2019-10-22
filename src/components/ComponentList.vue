@@ -54,6 +54,7 @@ export default class ComponentList extends Vue {
   public classname = 'imgclass';
   public selectedId = 0;
   public unselectedId = 0;
+
   public addItem(id: number, name: string, description: string, type: string, done: boolean = false) {
     let picture: string = 'default.png';
     const thisItem = this.items.push({id, name, description, picture, type, done });
@@ -70,7 +71,51 @@ export default class ComponentList extends Vue {
 
   }
 
+  public countBreeds = async () => {
 
+    dogsService.getBreeds().then((response) => {
+      if (response.data.message) {
+        let elemento = '';
+        let id = 0;
+        let subBreedsCount = 0;
+        const recordCount = Object.entries(response.data.message).length;
+        console.log( `Got ${recordCount} breeds` );
+        // console.log('skipping composite breed names');
+        // console.log(response.data.message);
+        for (let i = 0; i < recordCount; i++) {
+          ++id; // start from 1
+          let randomDogName: string;
+          // logic to build the dog breed name from sub-breeds
+          const entry: object = Object.entries(response.data.message)[i];
+          if ( Array.isArray(entry) ) {
+              subBreedsCount = entry[1].length;
+              // console.log('subBreeds count:' + subBreedsCount);
+              if ( subBreedsCount === 0 ) {
+                  randomDogName = dogNames.allRandom(); // get a random dog name
+                  elemento = entry[0];
+                  this.addItem(id, randomDogName, elemento, 'dog', false);
+                  // console.log( 'added: ' + randomDogName + ' un ' + elemento);
+              } else {
+                  for (let index = 0; index < subBreedsCount; index++) {
+                    ++id;  // start from 1
+                    randomDogName = dogNames.allRandom(); // get a random dog name
+                    elemento = entry[0] + '/' +
+                    entry[1][index];
+                    this.addItem(id, randomDogName, elemento, 'dog', false);
+                    // console.log( 'added: ' + randomDogName + ' un ' + elemento);
+                  }
+              }
+          }
+        }
+      }
+    })
+    .catch( (error) => {
+      console.log(error);
+    });
+
+  }
+
+  // UI events
   public mouseOver(id: number) {
     this.selectedId = id;
     this.unselectedId = -1;
@@ -82,64 +127,6 @@ export default class ComponentList extends Vue {
     this.selectedId = -1;
     this.classname = 'animated bounceIn';
     // console.log('leave');
-  }
-
-
-  public countBreeds = async () => {
-
-    const getBreeds = () => {
-      try {
-        return axios.get('https://dog.ceo/api/breeds/list/all');
-      } catch (error) {
-        console.error(error);
-        return null;
-      }
-    };
-    const res = getBreeds();
-    if (res !== null) {
-      const breeds = res
-      .then((response) => {
-        if (response.data.message) {
-          let elemento = '';
-          let id = 0;
-          let subBreedsCount = 0;
-          const recordCount = Object.entries(response.data.message).length;
-          console.log( `Got ${recordCount} breeds` );
-          // console.log('skipping composite breed names');
-          // console.log(response.data.message);
-          for (let i = 0; i < recordCount; i++) {
-            ++id; // start from 1
-            let randomDogName: string;
-            // logic to build the dog breed name from sub-breeds
-            const entry: object = Object.entries(response.data.message)[i];
-            if ( Array.isArray(entry) ) {
-                subBreedsCount = entry[1].length;
-                // console.log('subBreeds count:' + subBreedsCount);
-                if ( subBreedsCount === 0 ) {
-                    randomDogName = dogNames.allRandom(); // get a random dog name
-                    elemento = entry[0];
-                    this.addItem(id, randomDogName, elemento, 'dog', false);
-                    // console.log( 'added: ' + randomDogName + ' un ' + elemento);
-                } else {
-                    for (let index = 0; index < subBreedsCount; index++) {
-                      ++id;  // start from 1
-                      randomDogName = dogNames.allRandom(); // get a random dog name
-                      elemento = entry[0] + '/' +
-                      entry[1][index];
-                      this.addItem(id, randomDogName, elemento, 'dog', false);
-                      // console.log( 'added: ' + randomDogName + ' un ' + elemento);
-                    }
-                }
-            }
-
-          }
-        }
-      })
-      .catch( (error) => {
-        console.log(error);
-      });
-    }
-
   }
 
   // Lifecycle hooks
