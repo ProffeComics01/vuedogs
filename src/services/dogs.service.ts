@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 import Item from './../classes/Item';
 
 const api = 'https://dog.ceo/api';

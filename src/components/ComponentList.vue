@@ -50,7 +50,7 @@ export default class ComponentList extends Vue {
   public selectedId = 0;
   public unselectedId = 0;
   public leaveclassname = 'animated jello';
-  public classname = 'animated pulse';
+  /* public classname = 'animated pulse'; */
 
   public addItem(id: number, name: string, description: string, type: string, done: boolean = false) {
     let picture: string = 'default.png';
