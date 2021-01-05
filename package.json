@@ -10,7 +10,7 @@
     "styleguide:build": "vue-cli-service styleguidist:build"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "chart.js": "^2.9.3",
     "core-js": "^3.6.4",
     "dog-names": "^2.0.0",
